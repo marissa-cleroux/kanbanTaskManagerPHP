@@ -15,27 +15,46 @@
 <?php
 $displayForm = TRUE;
 $taskContent = FALSE;
-$taskFile = './Tasks/Tasks.json';
+$taskFile = "./Tasks/Tasks.json";
 $tasks = [];
+$editing = FALSE;
 
 function getTasks(){
     global $taskFile;
+    global $taskContent;
+    global $tasks;
 
-    if(file_exists($taskFile) and filesize($taskFile) > 0){
-        global $taskContent;
-        global $tasks;
+    if(file_exists($taskFile)){
+        $tasksFileContent = file_get_contents($taskFile);
+        echo '<pre>';
+        echo $tasksFileContent;
+        echo '</pre>';
+        $tasks = json_decode($tasksFileContent, TRUE);
+        $taskContent =TRUE;
 
-        $tasksContent = file_get_contents($taskFile);
-        $tasks = json_decode($tasksContent, TRUE);
+        echo '<pre>';
+        echo $tasks;
+        echo '</pre>';
 
-        foreach($tasks as $index => $task){
-            $addresses[$index] = rtrim($contact);
+        foreach($tasks as $i1 => $task){
+            echo '<pre>';
+            echo $task;
+            echo '</pre>';
+            if(is_object($task)){
+
+                foreach($task as $i2 => $prop){
+
+                    echo $prop;
+                }
+            }
         }
-        $addressContent = TRUE;
+
+    } else {
+        echo 'File does not exist or is 0';
     }
 }
 
-getAddresses();
+getTasks();
 if(isset($_POST['addContact'])){
 
     foreach($_POST as $index => $field){
@@ -53,8 +72,7 @@ if(isset($_POST['addContact'])){
         echo '<h3>Your address book could not be written to at this time, try again later.</h3>';
     }
 }
-getAddresses();
-
+getTasks();
 
 
 if($displayForm){
@@ -63,9 +81,11 @@ if($displayForm){
     <main>
         <div id="addressBook">
             <?php
-            if(!$addressContent) {
-                echo '<h3>No names found - add some friends</h3>';
-            }else {
+            if($taskContent) {
+                echo $tasks;
+            }
+
+            else {
                 ?>
 
                 <table>
