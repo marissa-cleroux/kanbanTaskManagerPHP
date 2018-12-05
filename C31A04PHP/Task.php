@@ -18,6 +18,10 @@ class Task {
         $this->status = 1;
     }
 
+    public function setId($id): void{
+        $this->id = $id;
+    }
+
     public function getId(): int{
         return $this->id;
     }

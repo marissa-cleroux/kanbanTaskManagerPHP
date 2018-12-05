@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Manage Tasks</title>
-    <link rel="stylesheet" href="./styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="./styles/main.css" type="text/css"/>
 
 </head>
 <body>
@@ -13,120 +13,154 @@
 
 
 <?php
+
+include_once("Task.php");
+
 $displayForm = TRUE;
 $taskContent = FALSE;
 $taskFile = "./Tasks/Tasks.json";
 $tasks = [];
 $editing = FALSE;
+$title = "";
+$description = "";
+$status = "";
 
-function getTasks(){
+function getTasks()
+{
     global $taskFile;
     global $taskContent;
     global $tasks;
 
-    if(file_exists($taskFile)){
+    if (file_exists($taskFile)) {
         $tasksFileContent = file_get_contents($taskFile);
-        echo '<pre>';
-        echo $tasksFileContent;
-        echo '</pre>';
-        $tasks = json_decode($tasksFileContent, TRUE);
-        $taskContent =TRUE;
+        $taskJSON = json_decode($tasksFileContent, TRUE);
+        $taskContent = TRUE;
 
-        echo '<pre>';
-        echo $tasks;
-        echo '</pre>';
-
-        foreach($tasks as $i1 => $task){
-            echo '<pre>';
-            echo $task;
-            echo '</pre>';
-            if(is_object($task)){
-
-                foreach($task as $i2 => $prop){
-
-                    echo $prop;
-                }
-            }
+        echo 'GET TASKS CALLED';
+        echo '<br>';
+        foreach ($taskJSON as $i => $task) {
+            $taskObj = new Task($task["title"], $task["description"]);
+            $taskObj->setDateCreated($task["dateCreated"]);
+            $taskObj->setDateUpdated($task["dateUpdated"]);
+            $taskObj->setStatus($task["status"]);
+            $taskObj->setId($task["id"]);
+            array_push($tasks, $taskObj);
         }
 
     } else {
-        echo 'File does not exist or is 0';
+        echo 'File does not exist';
     }
 }
 
 getTasks();
-if(isset($_POST['addContact'])){
 
-    foreach($_POST as $index => $field){
-        $_POST[$index] = htmlspecialchars_decode($field);
+function editTask($id, $tasks)
+{
+    global $editing;
+    global $title;
+    global $description;
+    global $status;
+
+    $editing = TRUE;
+    echo 'EDIT CALLED';
+
+    echo $tasks;
+    foreach ($tasks as $task) {
+        echo $task;
+        if ($task->getId() == $id) {
+            $title = $task->getTitle();
+            $description = $task->getDescription();
+            $status = $task->getStatus();
+        }
     }
 
-    $addressString = implode(',', array_slice($_POST, 0, 4));
-    array_unshift($addresses, $addressString);
-    $addresses = array_unique($addresses);
-    $addresses = array_values($addresses);
+    echo $title;
+    echo '<br>';
 
-    natcasesort($addresses);
-
-    if(!file_put_contents('addresses.txt', join("\n", $addresses))){
-        echo '<h3>Your address book could not be written to at this time, try again later.</h3>';
-    }
 }
-getTasks();
+
+if (isset($_GET['deleteTask'])) {
+
+}
+
+if (isset($_GET['editTask'])) {
+    editTask($_GET['editId'], $tasks);
+}
 
 
-if($displayForm){
+?>
+<main>
+    <div id="currentTasks">
+        <?php
+        if (!$taskContent) {
+            echo 'NO TASKS';
+        } else {
+            ?>
 
-    ?>
-    <main>
-        <div id="addressBook">
-            <?php
-            if($taskContent) {
-                echo $tasks;
-            }
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    <th>Date Last Updated</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
 
-            else {
+                <?php
+
+                foreach ($tasks as $task) {
+                    echo '<tr>';
+                    echo '<td>';
+                    echo $task->getTitle();
+                    echo '</td>';
+                    echo '<td>';
+                    echo $task->getDescription();
+                    echo '</td>';
+                    echo '<td>';
+                    echo $task->getDateCreated();
+                    echo '</td>';
+                    echo '<td>';
+                    echo $task->getDateUpdated();
+                    echo '</td>';
+                    echo '<td>';
+                    echo '<a href="?editTask=' . $task->getId() . '">edit</a>';
+                    echo '</td>';
+                    echo '<td>';
+                    echo '<a href="?deleteTask=' . $task->getId() . '">delete</a>';
+                    echo '</td>';
+                    echo '<tr>';
+                }
                 ?>
 
-                <table>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Date Created</th>
-                        <th>Date Last Updated</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                    <?php
+            </table>
 
-                    foreach($addresses as $contact){
-                        $contact = explode(',', $contact);
-                        echo '<tr>';
-                        foreach($contact as $parameter){
-                            echo "<td>$parameter</td>";
-                        }
-                        echo '</tr>';
-                    }
-                    ?>
+        <?php } ?>
 
-                </table>
-
-            <?php } ?>
-
-            <form method="POST" action="manageTasks.php" enctype="multipart/form-data">
-                <label>Title: </label>
-                <input type="text" name="title" id="title">
-                <label>Description: </label>
-                <input type="text" name="description" id="description">
-                <label>Status: </label>
-                <input type="text" name="status" id="status" <?php echo ($editing)? "disabled" : ""?> >
-                <label></label><input type="submit" value="Save Task" name="saveTask">
-            </form>
-        </div>
-    </main>
-    <?php
-
-}
-?>
+        <form method="POST" action="manageTasks.php" enctype="multipart/form-data">
+            <label>Title: </label>
+            <input type="text" name="title" id="title" value="<?php echo $title ?>">
+            <label>Description: </label>
+            <input type="text" name="description" id="description" value="<?php echo $description ?>">
+            <label>Status: </label>
+            <select <?php echo ($editing) ? "" : "disabled" ?>>
+                <option value="0"
+                <option value="1"
+                    <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
+                </option>
+                <option value="2"
+                    <?php echo ($status == 2) ? "selected" : ""; ?>>In Development
+                </option>
+                <option value="3"
+                    <?php echo ($status == 3) ? "selected" : ""; ?>>In Test
+                </option>
+                <option value="4"
+                    <?php echo ($status == 4) ? "selected" : ""; ?>>Complete
+                </option>
+            </select>
+            <label></label><input type="submit" value="Save Task" name="saveTask">
+        </form>
+    </div>
+</main>
 </body>
 </html>
