@@ -1,0 +1,58 @@
+body {
+    font-family: 'Calibri', sans-serif;
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid #000;
+}
+
+th, td {
+    padding: 5px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-content: center;
+}
+
+input[type="text"] {
+    margin: auto auto 10px auto;
+    width: 50%;
+}
+
+input[type="submit"] {
+    margin: auto;
+    width: 150px;
+}
+
+@media screen and (min-width:800px) {
+
+
+    form {
+        width: 90%;
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: 10px;
+        grid-column-gap: 15px;
+    }
+
+    label {
+        justify-self: end;
+    }
+
+    input {
+        justify-self: start;
+    }
+
+    input[type="text"], input[type="submit"] {
+        margin: 0;
+    }
+
+
+}
