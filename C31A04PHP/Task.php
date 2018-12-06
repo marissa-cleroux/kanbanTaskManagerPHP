@@ -66,7 +66,20 @@ class Task {
         $this->status = $status;
     }
 
+    public function toArray() : Array {
+        return array( "id"=>$this->id, "title"=>$this->title, "description"=>$this->description,
+            "dateCreated"=>$this->dateCreated, "dateUpdated"=>$this->dateUpdated, "status"=>$this->status);
+    }
 
+    public function updateDateUpdated() {
+        $this->dateUpdated = date('Ymd');
+    }
+/*"id": 155,
+"title": "Format Home Page",
+"description": "Align to new alignment choice",
+"dateCreated": 20180816,
+"dateUpdated": 20181025,
+"status": 4*/
 }
 
 

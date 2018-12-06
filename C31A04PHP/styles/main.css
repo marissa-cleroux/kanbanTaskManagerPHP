@@ -17,12 +17,13 @@ th, td {
 
 form {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 20px;
     align-content: center;
     justify-content: center;
 }
 
-input[type="text"] {
+input[type="text"], select {
     margin: auto auto 10px auto;
     width: 50%;
 }
@@ -50,7 +51,7 @@ input[type="submit"] {
         justify-self: start;
     }
 
-    input[type="text"], input[type="submit"] {
+    input[type="text"], input[type="submit"], select {
         margin: 0;
     }
 

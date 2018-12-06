@@ -24,6 +24,7 @@ $editing = FALSE;
 $title = "";
 $description = "";
 $status = "";
+$id = "";
 
 function getTasks()
 {
@@ -36,8 +37,6 @@ function getTasks()
         $taskJSON = json_decode($tasksFileContent, TRUE);
         $taskContent = TRUE;
 
-        echo 'GET TASKS CALLED';
-        echo '<br>';
         foreach ($taskJSON as $i => $task) {
             $taskObj = new Task($task["title"], $task["description"]);
             $taskObj->setDateCreated($task["dateCreated"]);
@@ -54,28 +53,66 @@ function getTasks()
 
 getTasks();
 
-function editTask($id, $tasks)
-{
+function editTask($taskId, $tasks){
     global $editing;
     global $title;
     global $description;
     global $status;
+    global $id;
 
     $editing = TRUE;
-    echo 'EDIT CALLED';
 
-    echo $tasks;
     foreach ($tasks as $task) {
-        echo $task;
-        if ($task->getId() == $id) {
+        if ($task->getId() == $taskId) {
             $title = $task->getTitle();
             $description = $task->getDescription();
             $status = $task->getStatus();
+            $id = $task->getId();
+        }
+    }
+}
+
+function updateTask($updatedTask){
+    global $tasks;
+
+    foreach($tasks as $task){
+        echo 'LOOP TASK: '. $task->getId();
+        echo '<br>';
+        echo 'SEARCH TASK: ' . $updatedTask['id'];
+        echo '<br>';
+        if($task->getId() == $updatedTask['id']){
+            echo 'TASK ID FOUND';
+            $task->updateDateUpdated();
+            $task->setStatus($updatedTask['status']);
+            $task->setTitle($updatedTask['title']);
+            $task->setDescription($updatedTask['description']);
         }
     }
 
-    echo $title;
-    echo '<br>';
+    saveTasks();
+}
+
+function saveTasks(){
+    global $tasks;
+    global $taskFile;
+
+    $taskArray = [];
+    foreach($tasks as $task){
+        array_push($taskArray, json_encode($task->toArray()) );
+    }
+
+    file_put_contents($taskFile, '[' . implode($taskArray, ",") . ']');
+}
+
+function createNewTask($newTask) {
+    global $tasks;
+    array_push($tasks, new Task($newTask['title'], $newTask['description']));
+    saveTasks();
+
+
+}
+
+function validateTask(){
 
 }
 
@@ -84,9 +121,18 @@ if (isset($_GET['deleteTask'])) {
 }
 
 if (isset($_GET['editTask'])) {
-    editTask($_GET['editId'], $tasks);
+    editTask($_GET['editTask'], $tasks);
 }
 
+if (isset($_POST['saveTask'])) {
+    if($_POST['id'] != ""){
+        echo "Id does not equal nothing";
+        updateTask($_POST);
+    } else {
+        echo "Id not set";
+        createNewTask($_POST);
+    }
+}
 
 ?>
 <main>
@@ -143,8 +189,8 @@ if (isset($_GET['editTask'])) {
             <label>Description: </label>
             <input type="text" name="description" id="description" value="<?php echo $description ?>">
             <label>Status: </label>
-            <select <?php echo ($editing) ? "" : "disabled" ?>>
-                <option value="0"
+            <select <?php echo ($editing) ? "" : "disabled" ?> name="status" id="status">
+                <option value="0">--Status--</option>
                 <option value="1"
                     <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
                 </option>
@@ -158,6 +204,7 @@ if (isset($_GET['editTask'])) {
                     <?php echo ($status == 4) ? "selected" : ""; ?>>Complete
                 </option>
             </select>
+            <input type="hidden" name="id" id="id" value="<?php echo $id ?>">
             <label></label><input type="submit" value="Save Task" name="saveTask">
         </form>
     </div>
