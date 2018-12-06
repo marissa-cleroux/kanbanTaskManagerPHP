@@ -98,7 +98,7 @@ function saveTasks(){
 
     $taskArray = [];
     foreach($tasks as $task){
-        array_push($taskArray, json_encode($task->toArray()) );
+        array_push($taskArray, json_encode($task->toArray(), JSON_PRETTY_PRINT) );
     }
 
     file_put_contents($taskFile, '[' . implode($taskArray, ",") . ']');
