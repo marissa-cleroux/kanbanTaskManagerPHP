@@ -1,4 +1,5 @@
 <?php
+
 include_once('taskIdReader.php');
 
 class Task {
@@ -9,8 +10,8 @@ class Task {
     private $dateUpdated;
     private $status;
 
-    function __construct($title, $desc){
-        $this->id = retrieveTaskId();
+    function __construct($id, $title, $desc){
+        $this->id = $id;
         $this->title = $title;
         $this->description = $desc;
         $this->dateCreated = date("Ymd");
@@ -74,22 +75,8 @@ class Task {
     public function updateDateUpdated() {
         $this->dateUpdated = date('Ymd');
     }
-/*"id": 155,
-"title": "Format Home Page",
-"description": "Align to new alignment choice",
-"dateCreated": 20180816,
-"dateUpdated": 20181025,
-"status": 4*/
+
+    public function getNewID(){
+        $this->id = retrieveTaskId();
+    }
 }
-
-
-
-/*  {
-      "id": 123,
-    "title": "Format Add Pet",
-    "description": "Complete Add Pet page",
-    "dateCreated": 20180816,
-    "dateUpdated": 20181025,
-    "status": 4
-  }
-]*/

@@ -1,13 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Address Boook</title>
-    <link rel="stylesheet" href="./styles/main.css" type="text/css" />
+<?php
+include_once("./manageTasksFunctions.php");
+$tasks = [];
 
-</head>
-<body>
-<header>
-    <h1>Your Address Book</h1>
+getTasks();
 
-</header>
+$status=$_GET["status"];
+
+$returnTasks = "[";
+foreach($tasks as $task) {
+
+    if ($task->getStatus() == $status) {
+        $returnTask = $task->toArray();
+        unset($returnTask["dateCreated"]);
+        unset($returnTask["description"]);
+        $returnString .= json_encode($returnTask->toArray(), JSON_PRETTY_PRINT);
+
+    }
+}
+
+$returnTasks .= "]";
+
+header("Content-Type: application/json");
+header("Cache-Control: no-cache");
+header("Content-Length: " . strlen($returnString));
+echo $returnString;
+
+?>
