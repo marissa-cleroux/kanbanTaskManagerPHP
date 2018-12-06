@@ -17,7 +17,7 @@ th, td {
 
 form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     margin-top: 20px;
     align-content: center;
     justify-content: center;
@@ -33,12 +33,26 @@ input[type="submit"] {
     width: 150px;
 }
 
+.hide {
+    display: none;
+}
+
+.error {
+    border: red solid 1px;
+}
+
+.errorTxt {
+    margin-top: 0;
+    color: red;
+    font-size: 0.7em;
+}
+
+
+
 @media screen and (min-width:800px) {
 
-
     form {
-        width: 90%;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-row-gap: 10px;
         grid-column-gap: 15px;
     }
@@ -51,7 +65,11 @@ input[type="submit"] {
         justify-self: start;
     }
 
-    input[type="text"], input[type="submit"], select {
+    p.errorTxt {
+        justify-self: start;
+    }
+
+    input[type="text"],  input[type="submit"], select {
         margin: 0;
     }
 

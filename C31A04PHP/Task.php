@@ -15,7 +15,7 @@ class Task {
         $this->title = $title;
         $this->description = $desc;
         $this->dateCreated = date("Ymd");
-        $this->dateUpdated = date('Ymd');
+        $this->dateUpdated = date("Ymd");
         $this->status = 1;
     }
 
@@ -78,5 +78,13 @@ class Task {
 
     public function getNewID(){
         $this->id = retrieveTaskId();
+    }
+
+    static function compareTasks($task1, $task2){
+        if($task1-> getDateUpdated() == $task2 ->getDateUpdated()){
+            return 0;
+        }
+
+        return ($task1->getDateUpdated() > $task2 ->getDateUpdated()) ? 1 : -1;
     }
 }

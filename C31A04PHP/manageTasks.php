@@ -26,17 +26,16 @@ $title = "";
 $description = "";
 $status = "";
 $id = "";
-
+$dateCreated = date("Ymd");
+$dateUpdated = date("Ymd");
+$taskObj = "";
+$errors = array('title'=>'', 'description'=>'', 'dateCreated'=>'', 'dateUpdated'=>'', 'status'=>'');
 
 
 getTasks();
 
-function validateTask(){
-
-}
-
 if (isset($_GET['deleteTask'])) {
-    
+
 }
 
 if (isset($_GET['editTask'])) {
@@ -44,6 +43,7 @@ if (isset($_GET['editTask'])) {
 }
 
 if (isset($_POST['saveTask'])) {
+    //echo var_dump(date_parse_from_format("Ymd", $_POST['dateCreated']));
     if($_POST['id'] != ""){
         updateTask($_POST);
     } else {
@@ -102,11 +102,23 @@ if (isset($_POST['saveTask'])) {
 
         <form method="POST" action="manageTasks.php" enctype="multipart/form-data">
             <label>Title: </label>
-            <input type="text" name="title" id="title" value="<?php echo $title ?>">
+            <input type="text" name="title" id="title" value="<?php echo $title ?>"/>
+            <p class="errorTxt"><?php echo (!empty($errors['title']))?$errors['title']: '';?></p>
+
             <label>Description: </label>
-            <input type="text" name="description" id="description" value="<?php echo $description ?>">
-            <label>Status: </label>
-            <select <?php echo ($editing) ? "" : "disabled" ?> name="status" id="status">
+            <input type="text" name="description" id="description" value="<?php echo $description ?>"/>
+            <p class="errorTxt"><?php echo (!empty($errors['description']))?$errors['description']: '';?></p>
+
+            <label class="<?php echo ($editing) ? "hide" : "" ?>">Date Created:</label>
+            <input type="<?php echo ($editing) ? "hidden" : "text" ?>" name="dateCreated" id="dateCreated" value="<?php echo $dateCreated ?>"/>
+            <p class="errorTxt <?php echo ($editing) ? "hide" : "" ?>"><?php echo (!empty($errors['dateCreated']))?$errors['dateCreated']: '';?></p>
+
+            <label class="<?php echo ($editing) ? "" : "hide" ?>">Date Updated:</label>
+            <input type="<?php echo ($editing) ? "text" : "hidden" ?>" name="dateUpdated" id="dateUpdated" value="<?php echo $dateUpdated ?>"/>
+            <p class="errorTxt <?php echo ($editing) ? "" : "hide" ?>"><?php echo (!empty($errors['dateUpdated']))?$errors['dateUpdated']: '';?></p>
+
+            <label class="<?php echo ($editing) ? "" : "hide" ?>">Status: </label>
+            <select class="<?php echo ($editing) ? "" : "hide" ?>" name="status" id="status">
                 <option value="0">--Status--</option>
                 <option value="1"
                     <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
@@ -121,8 +133,10 @@ if (isset($_POST['saveTask'])) {
                     <?php echo ($status == 4) ? "selected" : ""; ?>>Complete
                 </option>
             </select>
-            <input type="hidden" name="id" id="id" value="<?php echo $id ?>">
-            <label></label><input type="submit" value="Save Task" name="saveTask">
+            <p class="errorTxt <?php echo ($editing) ? "" : "hide" ?>"><?php echo (!empty($errors['status']))?$errors['status']: '';?></p>
+
+            <input type="hidden" name="id" id="id" value="<?php echo $id ?>"/>
+            <label></label><input type="submit" value="Save Task" name="saveTask"/>
         </form>
     </div>
 </main>

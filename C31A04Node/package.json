@@ -1,0 +1,14 @@
+{
+  "name": "c31a04node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "taskServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "request": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}

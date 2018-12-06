@@ -12,11 +12,11 @@ function getTasks(){
         $taskContent = TRUE;
 
         foreach ($taskJSON as $task) {
-            $taskObj = new Task($task["id"], $task["title"], $task["description"]);
-            $taskObj->setDateCreated($task["dateCreated"]);
-            $taskObj->setDateUpdated($task["dateUpdated"]);
-            $taskObj->setStatus($task["status"]);
-            $taskObj->setId($task["id"]);
+            $taskObj = new Task($task['id'], $task['title'], $task['description']);
+            $taskObj->setDateCreated($task['dateCreated']);
+            $taskObj->setDateUpdated($task['dateUpdated']);
+            $taskObj->setStatus($task['status']);
+            $taskObj->setId($task['id']);
             array_push($tasks, $taskObj);
         }
     } else {
@@ -29,6 +29,7 @@ function editTask($taskId, $tasks){
     global $title;
     global $description;
     global $status;
+    global $dateUpdated;
     global $id;
 
     $editing = TRUE;
@@ -47,16 +48,11 @@ function updateTask($updatedTask){
     global $tasks;
 
     foreach($tasks as $task){
-        echo 'LOOP TASK: '. $task->getId();
-        echo '<br>';
-        echo 'SEARCH TASK: ' . $updatedTask['id'];
-        echo '<br>';
         if($task->getId() == $updatedTask['id']){
-            echo 'TASK ID FOUND';
-            $task->updateDateUpdated();
             $task->setStatus($updatedTask['status']);
             $task->setTitle($updatedTask['title']);
             $task->setDescription($updatedTask['description']);
+            $task->setDateUpdated($updatedTask['dateUpdated']);
         }
     }
     saveTasks();
@@ -66,6 +62,7 @@ function saveTasks(){
     global $tasks;
     global $taskFile;
 
+    usort($tasks, array('Task', 'compareTasks'));
     $taskArray = [];
     foreach($tasks as $task){
         array_push($taskArray, json_encode($task->toArray(), JSON_PRETTY_PRINT) );
@@ -76,8 +73,53 @@ function saveTasks(){
 
 function createNewTask($newTask) {
     global $tasks;
-    $task = new Task(1, $newTask['title'], $newTask['description']);
-    $task -> getNewID();
-    array_push($tasks, $task);
-    saveTasks();
+
+    if(validateTask($newTask)){
+        $task = new Task(1, $newTask['title'], $newTask['description']);
+        $task->setDateCreated($newTask['dateCreated']);
+        $task->setDateUpdated($newTask['dateCreated']);
+        $task -> getNewID();
+        array_push($tasks, $task);
+        saveTasks();
+    }
+}
+
+
+function validateTask($newTask) : bool{
+    global $errors;
+    $isValid = TRUE;
+    $fieldNames = array('title' => 'Title', 'description'=> 'Description', 'dateCreated'=> 'Date Created', 'dateUpdated'=>'Date Updated', 'status'=> 'Status');
+
+    foreach($newTask as $field => $input){
+        if(empty($input) && $field != 'id'){
+            $errors[$field] = $fieldNames[$field] .' is empty';
+        }
+    }
+
+    $dateCreated = date_parse_from_format('Ymd', $newTask['dateCreated']);
+    $dateUpdated = date_parse_from_format('Ymd', $newTask['dateUpdated']);
+
+    if(empty($errors['dateCreated']) && ($dateCreated['month'] || $dateCreated['year'] || $dateCreated['day'])){
+        $errors['dateCreated'] = 'Dates must be in the format: YYYYMMDD';
+        $isValid = FALSE;
+    } else if (empty($errors['dateCreated']) && !checkdate($dateCreated['month'], $dateCreated['year'], $dateCreated['day'])){
+        $errors['dateCreated'] = $newTask['dateCreated'] . ' is not a valid date';
+        $isValid = FALSE;
+    }
+
+    if(empty($errors['dateUpdated']) && ($dateUpdated['month'] || $dateUpdated['year'] || $dateUpdated['day'])){
+        $errors['dateUpdated'] = 'Dates must be in the format: YYYYMMDD';
+        $isValid = FALSE;
+    } else if (empty($errors['dateUpdated']) && !checkdate($dateUpdated['month'], $dateUpdated['year'], $dateUpdated['day'])){
+        $errors['dateUpdated'] = $newTask['dateUpdated'] . ' is not a valid date';
+        $isValid = FALSE;
+    }
+
+    if($isValid && $newTask['dateCreated'] >= $newTask['dateUpdated']){
+        $errors['dateCreated'] = $newTask['dateCreated'] . ' is not a valid date';
+        $isValid = FALSE;
+    }
+
+    return $isValid;
+
 }

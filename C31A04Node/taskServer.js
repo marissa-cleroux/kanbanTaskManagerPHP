@@ -2,6 +2,7 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const request =require('request');
 
 const WEBROOT = './public';
 const ERROR_PATH = './errorpages';
@@ -30,7 +31,6 @@ let sendResponse = (response, content, code, contentType, req, err) =>{
     });
     response.end(content);
 
-    logRequest(req, code, err);
 };
 
 let readInFile = (localpath, contentType, response, code, req, errMsg)=>{
@@ -46,20 +46,6 @@ let readInFile = (localpath, contentType, response, code, req, errMsg)=>{
             })
         }
     })
-};
-
-let logRequest = (requested, code, error) => {
-    let localpath = path.join(__dirname, DATAROOT, 'logs/web.log');
-    let date = new Date();
-    let formattedDate = `${date.toLocaleDateString("en-ca")} ${date.toLocaleTimeString("en-ca", {hour12: true})}`;
-    let log = `${formattedDate} ${requested} ${code}`;
-    (error)? log += ` ${error}\n` : log += '\n';
-
-    fs.appendFile(localpath, log, (err)=>{
-        if(err){
-            console.log('Error: Log file cannot be written to.');
-        }
-    });
 };
 
 
@@ -98,7 +84,6 @@ http.createServer((request, response) =>{
     let ext = pathObj.ext;
 
     if(request.method === 'GET') {
-
          if (!ext) {
             serveDefault(urlObj, response, req);
         } else if (ext === '.ico') {

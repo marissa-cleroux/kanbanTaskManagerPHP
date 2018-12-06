@@ -6,6 +6,8 @@ getTasks();
 
 $status=$_GET["status"];
 
+$statuses = array("todo" => 1, "indev"=> 2, "intest"=> 3, "complete"=> 4);
+
 $returnTasks = "[";
 foreach($tasks as $task) {
 
@@ -23,6 +25,6 @@ $returnTasks .= "]";
 header("Content-Type: application/json");
 header("Cache-Control: no-cache");
 header("Content-Length: " . strlen($returnString));
-echo $returnString;
+echo $returnTasks;
 
 ?>
