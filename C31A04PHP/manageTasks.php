@@ -29,26 +29,36 @@ $id = "";
 $dateCreated = date("Ymd");
 $dateUpdated = date("Ymd");
 $taskObj = "";
-$errors = array('title'=>'', 'description'=>'', 'dateCreated'=>'', 'dateUpdated'=>'', 'status'=>'');
+$errors = array("title"=>"", "description"=>"", "dateCreated"=>"", "dateUpdated"=>"", "status"=>"");
 
 
 getTasks();
 
-if (isset($_GET['deleteTask'])) {
+if (isset($_GET["deleteTask"])) {
 
 }
 
-if (isset($_GET['editTask'])) {
-    editTask($_GET['editTask'], $tasks);
+if (isset($_GET["editTask"])) {
+    editTask($_GET["editTask"], $tasks);
 }
 
-if (isset($_POST['saveTask'])) {
+if (isset($_POST["saveTask"])) {
     //echo var_dump(date_parse_from_format("Ymd", $_POST['dateCreated']));
-    if($_POST['id'] != ""){
-        updateTask($_POST);
-    } else {
-        createNewTask($_POST);
+
+        if($_POST['id'] == "" && validateCreateTask($_POST)){
+            echo "CREATING";
+            createNewTask($_POST);
+        } else if ($_POST['id'] != "" && validateEditTask($_POST)) {
+            echo "UPDATING";
+            updateTask($_POST);
+        } else {
+            $title = $_POST["title"];
+            $dateCreated = $_POST["dateCreated"];
+            $dateUpdated = $_POST["dateUpdated"];
+            $description = $_POST["description"];
+            $status = $_POST["status"];
     }
+
 }
 
 ?>
@@ -102,23 +112,37 @@ if (isset($_POST['saveTask'])) {
 
         <form method="POST" action="manageTasks.php" enctype="multipart/form-data">
             <label>Title: </label>
-            <input type="text" name="title" id="title" value="<?php echo $title ?>"/>
-            <p class="errorTxt"><?php echo (!empty($errors['title']))?$errors['title']: '';?></p>
+            <input type="text" name="title" id="title"
+                   value="<?php echo $title ?>"
+                   class="<?php echo (!empty($errors["title"]))?"error": "";?>"/>
+            <p class="errorTxt"><?php echo (!empty($errors["title"]))?$errors["title"]: '';?></p>
 
             <label>Description: </label>
-            <input type="text" name="description" id="description" value="<?php echo $description ?>"/>
-            <p class="errorTxt"><?php echo (!empty($errors['description']))?$errors['description']: '';?></p>
+            <input type="text" name="description" id="description"
+                   value="<?php echo $description ?>"
+                   class="<?php echo (!empty($errors["description"]))?"error": "";?>"/>
+            <p class="errorTxt"><?php echo (!empty($errors["description"]))?$errors["description"]: '';?></p>
 
             <label class="<?php echo ($editing) ? "hide" : "" ?>">Date Created:</label>
-            <input type="<?php echo ($editing) ? "hidden" : "text" ?>" name="dateCreated" id="dateCreated" value="<?php echo $dateCreated ?>"/>
+            <input type="<?php echo ($editing) ? "hidden" : "text" ?>"
+                   name="dateCreated" id="dateCreated"
+                   value="<?php echo $dateCreated ?>"
+                   class="<?php echo (!empty($errors["dateCreated"]))?"error": "";?>"/>
             <p class="errorTxt <?php echo ($editing) ? "hide" : "" ?>"><?php echo (!empty($errors['dateCreated']))?$errors['dateCreated']: '';?></p>
 
             <label class="<?php echo ($editing) ? "" : "hide" ?>">Date Updated:</label>
-            <input type="<?php echo ($editing) ? "text" : "hidden" ?>" name="dateUpdated" id="dateUpdated" value="<?php echo $dateUpdated ?>"/>
+            <input type="<?php echo ($editing) ? "text" : "hidden" ?>"
+                   name="dateUpdated"
+                   id="dateUpdated"
+                   value="<?php echo $dateUpdated ?>"
+                   class="<?php echo (!empty($errors["dateUpdated"]))?"error": "";?>"/>
+
             <p class="errorTxt <?php echo ($editing) ? "" : "hide" ?>"><?php echo (!empty($errors['dateUpdated']))?$errors['dateUpdated']: '';?></p>
 
             <label class="<?php echo ($editing) ? "" : "hide" ?>">Status: </label>
-            <select class="<?php echo ($editing) ? "" : "hide" ?>" name="status" id="status">
+            <select class="<?php echo ($editing) ? "" : "hide";  (!empty($errors["status"]))?"error": "";?>"
+                    name="status"
+                    id="status">
                 <option value="0">--Status--</option>
                 <option value="1"
                     <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
