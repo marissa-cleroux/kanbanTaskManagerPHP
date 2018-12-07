@@ -61,6 +61,7 @@ if (isset($_POST["saveTask"])) {
 
 }
 
+getTasks();
 ?>
 <main>
     <div id="currentTasks">
@@ -143,18 +144,21 @@ if (isset($_POST["saveTask"])) {
             <select class="<?php echo ($editing) ? "" : "hide";  (!empty($errors["status"]))?"error": "";?>"
                     name="status"
                     id="status">
-                <option value="0">--Status--</option>
                 <option value="1"
-                    <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
+                        class="<?php echo ($status == 1 || $status == 0)? ""  : "hide"?>"
+                        <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
                 </option>
                 <option value="2"
-                    <?php echo ($status == 2) ? "selected" : ""; ?>>In Development
+                        class="<?php echo ($status == 1 || $status == 2 || $status == 3)? "" : "hide"?>"
+                        <?php echo ($status == 2) ? "selected" : ""; ?>>In Development
                 </option>
                 <option value="3"
-                    <?php echo ($status == 3) ? "selected" : ""; ?>>In Test
+                        class="<?php echo ($status == 2 || $status == 3)? "" : "hide"?>"
+                        <?php echo ($status == 3) ? "selected" : ""; ?>>In Test
                 </option>
                 <option value="4"
-                    <?php echo ($status == 4) ? "selected" : ""; ?>>Complete
+                        class="<?php echo ($status == 3)? "" : "hide"?>"
+                        <?php echo ($status == 4) ? "selected" : ""; ?>>Complete
                 </option>
             </select>
             <p class="errorTxt <?php echo ($editing) ? "" : "hide" ?>"><?php echo (!empty($errors['status']))?$errors['status']: '';?></p>

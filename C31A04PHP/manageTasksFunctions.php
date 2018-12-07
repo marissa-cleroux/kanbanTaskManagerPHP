@@ -6,6 +6,8 @@ function getTasks(){
     global $taskContent;
     global $tasks;
 
+    $tasks = array();
+
     if (file_exists($taskFile) and filesize($taskFile) > 0) {
         $tasksFileContent = file_get_contents($taskFile);
         $taskJSON = json_decode($tasksFileContent, TRUE);
@@ -98,21 +100,27 @@ function validateEditTask($newTask) : bool {
 
     $dateUpdated = date_parse_from_format('Ymd', $newTask['dateUpdated']);
 
-    if(empty($errors['dateUpdated']) && (!$dateUpdated['month'] || !$dateUpdated['year'] || !$dateUpdated['day'])){
-        $errors['dateUpdated'] = 'Dates must be in the format: YYYYMMDD';
-        $editing = TRUE;
-        $isValid = FALSE;
-    } else if (empty($errors['dateUpdated']) && !checkdate($dateUpdated['month'], $dateUpdated['day'],$dateUpdated['year'])){
-        $errors['dateUpdated'] = $newTask['dateUpdated'] . ' is not a valid date';
-        $editing = TRUE;
-        $isValid = FALSE;
+    if(empty($errors['dateUpdated'])) {
+        if (!$dateUpdated['month'] || !$dateUpdated['year'] || !$dateUpdated['day']) {
+            $errors['dateUpdated'] = 'Dates must be in the format: YYYYMMDD';
+            $editing = TRUE;
+            $isValid = FALSE;
+        } else if (!checkdate($dateUpdated['month'], $dateUpdated['day'], $dateUpdated['year'])) {
+            $errors['dateUpdated'] = $newTask['dateUpdated'] . ' is not a valid date';
+            $editing = TRUE;
+            $isValid = FALSE;
+        } else if ($newTask['dateUpdated'] > date('Ymd')){
+            $errors['dateUpdated'] = 'The updated date cannot be after today';
+            $editing = TRUE;
+            $isValid = FALSE;
+        } else if ($newTask['dateCreated'] > $newTask['dateUpdated']){
+            $errors['dateUpdated'] = 'The updated date must be after the created date';
+            $editing = TRUE;
+            $isValid = FALSE;
+        }
+
     }
 
-    if($isValid && $newTask['dateCreated'] > $newTask['dateUpdated']){
-        $errors['dateUpdated'] = 'The date last updated must be greater than the created date';
-        $editing = TRUE;
-        $isValid = FALSE;
-    }
 
     return $isValid;
 }
@@ -132,12 +140,17 @@ function validateCreateTask($newTask) : bool{
     $dateCreated = date_parse_from_format('Ymd', $newTask['dateCreated']);
 
 
-    if(empty($errors['dateCreated']) && (!$dateCreated['month'] || !$dateCreated['year'] || !$dateCreated['day'])){
-        $errors['dateCreated'] = 'Dates must be in the format: YYYYMMDD';
-        $isValid = FALSE;
-    } else if (empty($errors['dateCreated']) && !checkdate($dateCreated['month'], $dateCreated['day'], $dateCreated['year'])){
-        $errors['dateCreated'] = $newTask['dateCreated'] . ' is not a valid date';
-        $isValid = FALSE;
+    if(empty($errors['dateCreated'])) {
+        if (!$dateCreated['month'] || !$dateCreated['year'] || !$dateCreated['day']) {
+            $errors['dateCreated'] = 'Dates must be in the format: YYYYMMDD';
+            $isValid = FALSE;
+        } else if (empty($errors['dateCreated']) && !checkdate($dateCreated['month'], $dateCreated['day'], $dateCreated['year'])) {
+            $errors['dateCreated'] = $newTask['dateCreated'] . ' is not a valid date';
+            $isValid = FALSE;
+        } else if ($newTask['dateCreated'] > date('Ymd')) {
+            $errors['dateCreated'] = 'The created date cannot be after today';
+            $isValid = FALSE;
+        }
     }
 
     return $isValid;
