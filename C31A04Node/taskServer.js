@@ -2,7 +2,8 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const request =require('request');
+const requestModule =require('request');
+const qstring = require('querystring');
 
 const WEBROOT = './public';
 const ERROR_PATH = './errorpages';
@@ -56,7 +57,6 @@ let serveIcon = (localpath, response, ext, req) => {
                 'content-type': EXTENSIONS[ext]
             });
             response.end();
-            logRequest(req, 200);
         } else {
             readInFile(localpath, EXTENSIONS[ext], response, 200, req);
         }
@@ -82,6 +82,7 @@ http.createServer((request, response) =>{
     let pathObj = path.parse(urlObj.pathname);
     let fileName = pathObj.base || DEFAULT_PAGE;
     let ext = pathObj.ext;
+    let query = qstring.parse(urlObj.query);
 
     if(request.method === 'GET') {
          if (!ext) {
@@ -89,7 +90,15 @@ http.createServer((request, response) =>{
         } else if (ext === '.ico') {
             let localpath = path.join(__dirname, WEBROOT, pathObj.dir, fileName);
             serveIcon(localpath, response, ext, req);
-        } else if (EXTENSIONS[ext]) {
+        } else if(query.status != undefined){
+             console.log(query.status);
+             requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskInfo.php?status=' + query.status, function (error, response, body) {
+                 console.log('error:', error); // Print the error if one occurred
+                 console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                 console.log('body:', body); // Print the HTML for the Google homepage.
+             });
+
+         } else if (EXTENSIONS[ext]) {
             let type = EXTENSIONS[ext];
             let localpath = path.join(__dirname, WEBROOT, pathObj.dir, fileName);
             readInFile(localpath, type, response, 200, req);

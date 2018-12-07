@@ -4,7 +4,7 @@ $tasks = [];
 
 getTasks();
 
-$status=$_GET["id"];
+$status=$_POST["id"];
 
 foreach($tasks as $task) {
 

@@ -1,0 +1,76 @@
+body {
+    font-family: 'Calibri', sans-serif;
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid #000;
+}
+
+th, td {
+    padding: 5px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 20px;
+    align-content: center;
+    justify-content: center;
+}
+
+input[type="text"], select {
+    margin: auto auto 10px auto;
+}
+
+input[type="submit"] {
+    margin: auto;
+    width: 150px;
+}
+
+.hide {
+    display: none;
+}
+
+.error {
+    border: red solid 1px;
+}
+
+.errorTxt {
+    margin-top: 0;
+    color: red;
+    font-size: 0.7em;
+}
+
+
+
+@media screen and (min-width:800px) {
+
+    form {
+        grid-template-columns: 3fr 1fr 3fr;
+        grid-row-gap: 10px;
+        grid-column-gap: 15px;
+    }
+
+    label {
+        justify-self: end;
+    }
+
+    input {
+        justify-self: start;
+    }
+
+    p.errorTxt {
+        justify-self: start;
+    }
+
+    input[type="text"],  input[type="submit"], select {
+        margin: 0;
+    }
+
+
+}

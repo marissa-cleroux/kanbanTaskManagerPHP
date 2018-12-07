@@ -8,8 +8,9 @@ function getTasks(){
 
     $tasks = array();
 
-    if (file_exists($taskFile) and filesize($taskFile) > 0) {
-        $tasksFileContent = file_get_contents($taskFile);
+
+    if (file_exists("./Tasks/Tasks.json")) {
+        $tasksFileContent = file_get_contents("./Tasks/Tasks.json");
         $taskJSON = json_decode($tasksFileContent, TRUE);
         $taskContent = TRUE;
 
@@ -31,7 +32,6 @@ function editTask($taskId, $tasks){
     global $title;
     global $description;
     global $status;
-    global $dateUpdated;
     global $id;
 
     $editing = TRUE;
