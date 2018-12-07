@@ -91,6 +91,8 @@ http.createServer((request, response) =>{
     let query = qstring.parse(urlObj.query);
 
     if(request.method === 'GET') {
+        console.log(urlObj.pathname);
+        console.log(query.status);
          if (!ext) {
             serveDefault(urlObj, response, req);
         } else if (ext === '.ico') {
