@@ -9,6 +9,12 @@ const WEBROOT = './public';
 const ERROR_PATH = './errorpages';
 const DEFAULT_PAGE = 'index.html';
 const PORT = 7546;
+const STATUSES = {
+    1:'To Do',
+    2:'In Development',
+    3:'In Testing',
+    4:'Complete'
+};
 const EXTENSIONS = {
     '.html': 'text/html',
     '.css': 'text/css',
@@ -91,13 +97,22 @@ http.createServer((request, response) =>{
             let localpath = path.join(__dirname, WEBROOT, pathObj.dir, fileName);
             serveIcon(localpath, response, ext, req);
         } else if(query.status != undefined){
-             console.log(query.status);
-             requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskInfo.php?status=' + query.status, function (error, response, body) {
-                 console.log('error:', error); // Print the error if one occurred
-                 console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                 console.log('body:', body); // Print the HTML for the Google homepage.
+             requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskInfo.php?status=' + query.status, function (error, resp, body) {
+                 sendResponse(response, body, resp.statusCode,'application/json');
              });
 
+         } else if(query.id != undefined){
+             requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskDetail.php?id=' + query.id, {json:true}, function (error, resp, body) {
+                 let singleTask = `
+                    <div class="task">
+                        <h4>Title: ${body["title"]}</h4>
+                        <p>Description: ${body["description"]}</p>
+                        <p>Date Updated: ${body["dateCreated"]}</p>
+                        <p>Status: ${STATUSES[body["status"]]}</p>
+                    </div>`;
+
+                 sendResponse(response, singleTask, resp.statusCode,'text/html');
+             });
          } else if (EXTENSIONS[ext]) {
             let type = EXTENSIONS[ext];
             let localpath = path.join(__dirname, WEBROOT, pathObj.dir, fileName);
