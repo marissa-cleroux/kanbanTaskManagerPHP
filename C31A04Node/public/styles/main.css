@@ -1,90 +1,117 @@
 body {
-    font-family: 'Calibri', sans-serif;
+    font-family: 'Montserrat', 'Calibri', sans-serif;
     text-align: center;
+    margin: 0;
 }
 
-table {
-    margin: auto;
-    border-collapse: collapse;
-}
-table, th, td {
-    border: 1px solid #000;
+header {
+    position: relative;
+    font-family: 'Lora', 'Times New Roman', serif;
 }
 
-th, td {
-    padding: 5px;
+header::before {
+    content: "";
+    display: block;
+    background-color: #f7eac8;
+    margin-right: -10px;
+    height: 600px;
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    transform: skewY(-7deg);
+    z-index: -1;
+}
+
+header>h3 {
+    color: #333333;
+    font-weight: normal;
+    font-style: italic;
 }
 
 form {
     display: grid;
-    grid-template-columns: 1fr;
-    margin-top: 20px;
-    align-content: center;
+    margin-bottom: 20px;
+    grid-template-columns: 3fr 1fr 3fr;
+    grid-column-gap: 10px;
     justify-content: center;
 }
 
-input[type="text"], select {
-    margin: auto auto 10px auto;
+label {
+    justify-self: end;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    align-self:center;
 }
 
-input[type="submit"] {
-    margin: auto;
-    width: 150px;
+select {
+    background-color: #fff;
+    padding: 5px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .hide {
     display: none;
 }
 
-.error {
-    border: red solid 1px;
-}
-
-.errorTxt {
-    margin-top: 0;
-    color: red;
-    font-size: 0.7em;
-}
 
 .task {
-    border: solid 1px #000;
+    border-top: solid 1px #000;
+    border-right: solid 1px #000;
+    border-bottom: solid 1px #000;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px;
+    text-align: left;
+}
+
+.multitask:hover {
+    cursor: pointer;
+}
+
+.task>h3 {
+    border-bottom: solid 1px #333;
+}
+
+.todo {
+    border-left: solid 5px #db3340;
+}
+
+.indev {
+    border-left: solid 5px #e8b71a;
+}
+
+.intest {
+    border-left: solid 5px #28abe3;
+}
+
+.complete {
+    border-left: solid 5px #1fda9a;
 }
 
 #tasks {
+    width: 95%;
+    margin: auto;
     display: grid;
     grid-row-gap: 10px;
-    grid-template-columns: 1fr;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat( auto-fill, minmax(250px, 1fr) );
     justify-content: center;
 }
 
-@media screen and (min-width:800px) {
 
+@media screen and (min-width:768px) {
     form {
-        grid-template-columns: 3fr 1fr 3fr;
-        grid-row-gap: 10px;
-        grid-column-gap: 15px;
+        margin: 40px auto 30px auto;
+        border: dashed 1px #000;
+        padding: 25px 20px 25px 20px;
+        width: 50%;
     }
 
     #tasks {
-        grid-column-gap: 10px;
-        grid-template-columns: 1fr 1fr 1fr;
+        width: 85%;
+        grid-row-gap: 20px;
+        grid-column-gap: 20px;
+        grid-template-columns: repeat( auto-fill, minmax(300px, 1fr) );
     }
-
-    label {
-        justify-self: end;
-    }
-
-    input {
-        justify-self: start;
-    }
-
-    p.errorTxt {
-        justify-self: start;
-    }
-
-    input[type="text"],  input[type="submit"], select {
-        margin: 0;
-    }
-
 
 }

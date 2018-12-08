@@ -1,19 +1,33 @@
 body {
-    font-family: 'Calibri', sans-serif;
+    font-family: 'Montserrat', 'Calibri', sans-serif;
     text-align: center;
+    padding: 0;
+    margin: 0;
 }
 
-table {
-    margin: auto;
-    border-collapse: collapse;
-}
-table, th, td {
-    border: 1px solid #000;
+a {
+    text-decoration: none;
+    color: #000;
 }
 
-th, td {
-    padding: 5px;
+header {
+    position: relative;
+    font-family: 'Lora', 'Times New Roman', serif;
 }
+
+header::before {
+    content: "";
+    display: block;
+    background-color: #f7eac8;
+    margin-right: -10px;
+    height: 600px;
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    transform: skewY(-7deg);
+    z-index: -1;
+}
+
 
 form {
     display: grid;
@@ -21,10 +35,16 @@ form {
     margin-top: 20px;
     align-content: center;
     justify-content: center;
+    margin-bottom: 25px;
+}
+
+input, select {
+    font-family: 'Montserrat', sans-serif;
 }
 
 input[type="text"], select {
-    margin: auto auto 10px auto;
+    height: 1.5em;
+
 }
 
 input[type="submit"] {
@@ -35,6 +55,53 @@ input[type="submit"] {
 .hide {
     display: none;
 }
+
+label {
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    align-self:center;
+}
+.task {
+    border-top: solid 1px #000;
+    border-right: solid 1px #000;
+    border-bottom: solid 1px #000;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px;
+    text-align: left;
+}
+
+
+.task>h3 {
+    border-bottom: solid 1px #333;
+}
+
+.todo {
+    border-left: solid 5px #db3340;
+}
+
+.indev {
+    border-left: solid 5px #e8b71a;
+}
+
+.intest {
+    border-left: solid 5px #28abe3;
+}
+
+.complete {
+    border-left: solid 5px #1fda9a;
+}
+
+#currentTasks {
+    width: 95%;
+    margin: auto;
+    display: grid;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat( auto-fill, minmax(250px, 1fr) );
+    justify-content: center;
+}
+
 
 .error {
     border: red solid 1px;
@@ -48,7 +115,16 @@ input[type="submit"] {
 
 
 
-@media screen and (min-width:800px) {
+@media screen and (min-width:768px) {
+    #currentTasks {
+        width: 90%;
+        margin: auto;
+        display: grid;
+        grid-row-gap: 20px;
+        grid-column-gap: 20px;
+        grid-template-columns: repeat( auto-fill, minmax(300px, 1fr) );
+        justify-content: center;
+    }
 
     form {
         grid-template-columns: 3fr 1fr 3fr;
@@ -74,3 +150,44 @@ input[type="submit"] {
 
 
 }
+
+
+/*
+body {
+    font-family: 'Montserrat', 'Calibri', sans-serif;
+    text-align: center;
+    margin: 0;
+}
+
+
+header>h3 {
+    color: #333333;
+    font-weight: normal;
+    font-style: italic;
+}
+
+form {
+    display: grid;
+    margin-bottom: 20px;
+    grid-template-columns: 3fr 1fr 3fr;
+    grid-column-gap: 10px;
+    justify-content: center;
+}
+
+
+@media screen and (min-width:768px) {
+    form {
+        margin: 40px auto 30px auto;
+        border: dashed 1px #000;
+        padding: 25px 20px 25px 20px;
+        width: 50%;
+    }
+
+    #tasks {
+        width: 85%;
+        grid-row-gap: 20px;
+        grid-column-gap: 20px;
+        grid-template-columns: repeat( auto-fill, minmax(300px, 1fr) );
+    }
+
+}*/

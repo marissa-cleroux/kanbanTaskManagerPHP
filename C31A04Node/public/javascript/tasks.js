@@ -22,30 +22,29 @@ addEventListener('load', ()=>{
         clearInterval(interval);
         console.log('event fired');
         getTasks(e.target.value);
-        interval = setInterval(()=>{getRequest(e)}, 30000);
+        interval = setInterval(()=>{getTasks(e.target.value)}, 30000);
     });
 
     section.addEventListener('click', (e)=> {
-        console.log(e.target);
-       if(e.target.classList.contains("task")){
+        if(e.target.classList.contains('multitask')){
+           clearInterval(interval);
            getSingleTask(e.target.id);
            console.log("Task clicked");
-       } else {
-           console.log("Section clicked");
-       }
+        } else if (e.target.parentNode.classList.contains('multitask')){
+            clearInterval(interval);
+            getSingleTask(e.target.parentNode.id);
+        }
     });
 
     let getTasks = (selected) => {
         section.innerHTML = "";
+        console.log(selected);
         fetch(`?status=${selected}`, {
             Method: 'get'
         }).then((response) => {
-            console.log('first response');
             return response.text();
         }).then((text) =>{
-            console.log('second response');
             let tasks = JSON.parse(text);
-            console.log(tasks);
             displayTasks(tasks);
         }).catch( error =>{
             console.log('Request failed: ', error);
@@ -63,7 +62,8 @@ addEventListener('load', ()=>{
             section.innerHTML += text;
         }).catch( error =>{
             console.log('Request failed: ', error);
-        })
+        });
+
     };
 
     let displayTasks = (tasks) => {
@@ -75,7 +75,7 @@ addEventListener('load', ()=>{
 
     let outputTask = (title, id, status, dateUpdated) =>{
 
-        let task = `<div id="${id}" class="task ${STATUS_CLASS[status]}">
+        let task = `<div id="${id}" class="task ${STATUS_CLASS[status]} multitask">
                         <h3>Title: ${title}</h3>                    
                         <p>Status: ${STATUS_OUTPUT[status]}</p>
                         <p>Date last updated: ${dateUpdated}</p>`;

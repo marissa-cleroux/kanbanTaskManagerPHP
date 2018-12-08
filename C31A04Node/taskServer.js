@@ -15,6 +15,14 @@ const STATUSES = {
     3:'In Testing',
     4:'Complete'
 };
+
+const STATUS_CLASS = {
+    1:'todo',
+    2: 'indev',
+    3:'intest',
+    4:'complete'
+};
+
 const EXTENSIONS = {
     '.html': 'text/html',
     '.css': 'text/css',
@@ -91,8 +99,6 @@ http.createServer((request, response) =>{
     let query = qstring.parse(urlObj.query);
 
     if(request.method === 'GET') {
-        console.log(urlObj.pathname);
-        console.log(query.status);
          if (!ext) {
             serveDefault(urlObj, response, req);
         } else if (ext === '.ico') {
@@ -106,10 +112,11 @@ http.createServer((request, response) =>{
          } else if(query.id != undefined){
              requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskDetail.php?id=' + query.id, {json:true}, function (error, resp, body) {
                  let singleTask = `
-                    <div class="task">
+                    <div class="task ${STATUS_CLASS[body["status"]]}">
                         <h4>Title: ${body["title"]}</h4>
                         <p>Description: ${body["description"]}</p>
-                        <p>Date Updated: ${body["dateCreated"]}</p>
+                        <p>Date Created: ${body["dateCreated"]}</p>
+                        <p>Date Updated: ${body["dateUpdated"]}</p>
                         <p>Status: ${STATUSES[body["status"]]}</p>
                     </div>`;
 
