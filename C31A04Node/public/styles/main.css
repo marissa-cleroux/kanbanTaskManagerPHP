@@ -62,6 +62,7 @@ select {
     border-bottom-right-radius: 10px;
     padding: 20px;
     text-align: left;
+    overflow-wrap: break-word;
 }
 
 .multitask:hover {
@@ -90,7 +91,7 @@ select {
 
 #tasks {
     width: 95%;
-    margin: auto;
+    margin: auto auto 30px auto;
     display: grid;
     grid-row-gap: 10px;
     grid-column-gap: 10px;

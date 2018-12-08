@@ -5,6 +5,9 @@
     <title>Manage Tasks</title>
     <link rel="stylesheet" href="./styles/main.css" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Lora|Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+
 </head>
 <body>
 <header>
@@ -128,38 +131,18 @@ getTasks();
         } else {
             ?>
 
-         <!--   <table>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Date Created</th>
-                    <th>Date Last Updated</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>-->
-
                 <?php
 
                 foreach ($tasks as $task) {
 
                     echo "<div class='task {$status_class[$task->getStatus()]}'>";
-                    echo "<a href='?editTask={$task->getId()}'<h4>Title: {$task->getTitle()}</h4></a>";
+                    echo "<a href='?editTask={$task->getId()}'>Title: {$task->getTitle()}<i class=\"fas fa-pencil-alt\"></i></a>";
                     echo "<p>Description: {$task->getDescription()}</p>";
                     echo "<p>Date Created: {$task->getDateCreated()}</p>";
                     echo "<p>Date Updated: {$task->getDateUpdated()}</p>";
                     echo "</div>";
-/*
-                    echo '<a href="?editTask=' . $task->getId() . '">edit</a>';
-                    echo '</td>';
-                    echo '<td>';
-                    echo '<a href="?deleteTask=' . $task->getId() . '">delete</a>';
-                    echo '</td>';
-                    echo '<tr>';*/
                 }
                 ?>
-
-   <!--         </table>-->
-
         <?php } ?>
 
 
