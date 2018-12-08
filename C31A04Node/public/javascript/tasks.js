@@ -21,11 +21,21 @@ addEventListener('load', ()=>{
     dropdown.addEventListener('change', (e)=>{
         clearInterval(interval);
         console.log('event fired');
-        getRequest(e.target.value);
+        getTasks(e.target.value);
         interval = setInterval(()=>{getRequest(e)}, 30000);
     });
 
-    let getRequest = (selected) => {
+    section.addEventListener('click', (e)=> {
+        console.log(e.target);
+       if(e.target.classList.contains("task")){
+           getSingleTask(e.target.id);
+           console.log("Task clicked");
+       } else {
+           console.log("Section clicked");
+       }
+    });
+
+    let getTasks = (selected) => {
         section.innerHTML = "";
         fetch(`?status=${selected}`, {
             Method: 'get'
@@ -42,6 +52,20 @@ addEventListener('load', ()=>{
         })
     };
 
+    let getSingleTask = (selected) => {
+        section.innerHTML = "";
+        fetch(`?id=${selected}`, {
+            Method: 'get'
+        }).then((response) => {
+            console.log('first response');
+            return response.text();
+        }).then((text) =>{
+            section.innerHTML += text;
+        }).catch( error =>{
+            console.log('Request failed: ', error);
+        })
+    };
+
     let displayTasks = (tasks) => {
         section.innerHTMl = "";
         Array.from(tasks).map((task) => {
@@ -50,6 +74,7 @@ addEventListener('load', ()=>{
     };
 
     let outputTask = (title, id, status, dateUpdated) =>{
+
         let task = `<div id="${id}" class="task ${STATUS_CLASS[status]}">
                         <h3>Title: ${title}</h3>                    
                         <p>Status: ${STATUS_OUTPUT[status]}</p>
@@ -59,6 +84,6 @@ addEventListener('load', ()=>{
     };
 
 
-    getRequest(dropdown.value);
-    interval = setInterval(() => {getRequest(dropdown.value)}, 30000);
+    getTasks(dropdown.value);
+    interval = setInterval(() => {getTasks(dropdown.value)}, 30000);
 });
