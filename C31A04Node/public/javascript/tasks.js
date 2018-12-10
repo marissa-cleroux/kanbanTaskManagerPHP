@@ -20,7 +20,6 @@ addEventListener('load', ()=>{
 
     dropdown.addEventListener('change', (e)=>{
         clearInterval(interval);
-        console.log('event fired');
         getTasks(e.target.value);
         interval = setInterval(()=>{getTasks(e.target.value)}, 30000);
     });
@@ -29,7 +28,6 @@ addEventListener('load', ()=>{
         if(e.target.classList.contains('multitask')){
            clearInterval(interval);
            getSingleTask(e.target.id);
-           console.log("Task clicked");
         } else if (e.target.parentNode.classList.contains('multitask')){
             clearInterval(interval);
             getSingleTask(e.target.parentNode.id);
@@ -38,7 +36,6 @@ addEventListener('load', ()=>{
 
     let getTasks = (selected) => {
         section.innerHTML = "";
-        console.log(selected);
         fetch(`?status=${selected}`, {
             Method: 'get'
         }).then((response) => {
@@ -56,7 +53,6 @@ addEventListener('load', ()=>{
         fetch(`?id=${selected}`, {
             Method: 'get'
         }).then((response) => {
-            console.log('first response');
             return response.text();
         }).then((text) =>{
             section.innerHTML += text;

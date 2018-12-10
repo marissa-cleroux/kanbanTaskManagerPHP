@@ -2,14 +2,13 @@
     include_once("Task.php");
 
 function getTasks(){
-    global $taskFile;
     global $taskContent;
     global $tasks;
 
     $tasks = array();
 
 
-    if (file_exists("./Tasks/Tasks.json")) {
+    if (file_exists("./Tasks/Tasks.json") && filesize("./Tasks/Tasks.json") > 0) {
         $tasksFileContent = file_get_contents("./Tasks/Tasks.json");
         $taskJSON = json_decode($tasksFileContent, TRUE);
         $taskContent = TRUE;
@@ -22,8 +21,12 @@ function getTasks(){
             $taskObj->setId($task['id']);
             array_push($tasks, $taskObj);
         }
+
+        return 200;
+    } else if(filesize("./Tasks/Tasks.json") == 0){
+        return 200;
     } else {
-        echo 'File does not exist';
+        return 206;
     }
 }
 

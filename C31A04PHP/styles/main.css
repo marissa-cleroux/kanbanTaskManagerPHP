@@ -54,7 +54,9 @@ input[type="text"], select {
 
 input[type="submit"] {
     margin: auto;
-    width: 150px;
+    width: 130px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .hide {
@@ -63,7 +65,6 @@ input[type="submit"] {
 
 label {
     letter-spacing: 0.5px;
-    text-transform: uppercase;
     align-self:center;
 }
 .task {

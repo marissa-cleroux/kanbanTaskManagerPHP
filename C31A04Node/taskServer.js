@@ -39,7 +39,7 @@ const EXTENSIONS = {
     '.json': 'application/json'
 };
 
-let sendResponse = (response, content, code, contentType, req, err) =>{
+let sendResponse = (response, content, code, contentType) =>{
     response.writeHead(code, {
         'content-type': contentType,
         'content-length': content.length
@@ -48,10 +48,10 @@ let sendResponse = (response, content, code, contentType, req, err) =>{
 
 };
 
-let readInFile = (localpath, contentType, response, code, req, errMsg)=>{
+let readInFile = (localpath, contentType, response, code, req)=>{
     fs.readFile(localpath, (err, content)=> {
         if (!err) {
-            sendResponse(response, content, code, contentType, req, errMsg)
+            sendResponse(response, content, code, contentType)
         } else if (err.code === 'ENOENT') {
             readInFile(path.join(__dirname, ERROR_PATH, '404.html'), 'text/html', response, 404, req, err.message);
         } else {
@@ -106,12 +106,17 @@ http.createServer((request, response) =>{
             serveIcon(localpath, response, ext, req);
         } else if(query.status != undefined){
              requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskInfo.php?status=' + query.status, function (error, resp, body) {
-                 sendResponse(response, body, resp.statusCode,'application/json');
+                 if(!error) {
+                     sendResponse(response, body, resp.statusCode, 'application/json');
+                 } else {
+                     sendResponse(response, 'No tasks found' ,resp.statusCode, 'text/plain');
+                 }
              });
 
          } else if(query.id != undefined){
              requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/C31A04PHP/getTaskDetail.php?id=' + query.id, {json:true}, function (error, resp, body) {
-                 let singleTask = `
+                 if(!error && resp.statusCode == 200) {
+                     let singleTask = `
                     <div class="task ${STATUS_CLASS[body["status"]]}">
                         <h4>Title: ${body["title"]}</h4>
                         <p>Description: ${body["description"]}</p>
@@ -119,8 +124,10 @@ http.createServer((request, response) =>{
                         <p>Date Updated: ${body["dateUpdated"]}</p>
                         <p>Status: ${STATUSES[body["status"]]}</p>
                     </div>`;
-
-                 sendResponse(response, singleTask, resp.statusCode,'text/html');
+                     sendResponse(response, singleTask, resp.statusCode, 'text/html');
+                 } else {
+                     sendResponse(response, 'No tasks found' ,resp.statusCode, 'text/plain');
+                 }
              });
          } else if (EXTENSIONS[ext]) {
             let type = EXTENSIONS[ext];

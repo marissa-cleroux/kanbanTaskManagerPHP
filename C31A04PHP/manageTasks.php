@@ -47,13 +47,10 @@ if (isset($_GET["editTask"])) {
 }
 
 if (isset($_POST["saveTask"])) {
-    //echo var_dump(date_parse_from_format("Ymd", $_POST['dateCreated']));
 
         if($_POST['id'] == "" && validateCreateTask($_POST)){
-            echo "CREATING";
             createNewTask($_POST);
         } else if ($_POST['id'] != "" && validateEditTask($_POST)) {
-            echo "UPDATING";
             updateTask($_POST);
         } else {
             $title = $_POST["title"];
@@ -127,7 +124,7 @@ getTasks();
     <div id="currentTasks">
         <?php
         if (!$taskContent) {
-            echo 'NO TASKS';
+            echo "There are currently no tasks";
         } else {
             ?>
 

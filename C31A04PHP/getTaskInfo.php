@@ -1,16 +1,14 @@
 <?php
 include_once("./manageTasksFunctions.php");
 $tasks = [];
-getTasks();
+$statusCode = getTasks();
 
 $status=$_GET["status"];
-
-echo "YOU ARE HERE";
 
 function getSingleStatus($stat) {
     global $tasks;
     $returnTasksArray = array();
-    $statuses = array("todo" => 1, "indev"=> 2, "intest"=> 3, "complete"=> 4);
+    $statuses = array("all"=> 0, "todo" => 1, "indev"=> 2, "intest"=> 3, "complete"=> 4);
 
     foreach($tasks as $task) {
         if ($task->getStatus() == $statuses[$stat]) {
@@ -24,9 +22,10 @@ function getSingleStatus($stat) {
     return $returnTasksArray;
 }
 
-/*function getAllTasks(){
+function getAllTasks(){
     global $tasks;
     $returnTasksArray = array();
+
 
     foreach($tasks as $task) {
         $returnTask = $task->toArray();
@@ -36,7 +35,7 @@ function getSingleStatus($stat) {
     }
 
     return $returnTasksArray;
-}*/
+}
 
 $returnTasks = "[";
 
@@ -53,6 +52,5 @@ $returnTasks .= "]";
 header("Content-Type: application/json");
 header("Cache-Control: no-cache");
 header("Content-Length: " . strlen($returnTasks));
+header("Status: " . $statusCode);
 echo $returnTasks;
-
-?>

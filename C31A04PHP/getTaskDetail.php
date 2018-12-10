@@ -2,7 +2,7 @@
 include_once("./manageTasksFunctions.php");
 $tasks = [];
 
-getTasks();
+$statusCode = getTasks();
 
 $id=$_GET["id"];
 
@@ -16,6 +16,8 @@ foreach($tasks as $task) {
 header("Content-Type: application/json");
 header("Cache-Control: no-cache");
 header("Content-Length: " . strlen($returnTask));
+header("Status: " . $statusCode);
+
 echo $returnTask;
 
 ?>
