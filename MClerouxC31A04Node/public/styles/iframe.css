@@ -1,0 +1,35 @@
+body {
+    font-family: 'Montserrat', 'Calibri', sans-serif;
+    text-align: center;
+    margin: 0;
+}
+
+.task {
+    border-top: solid 1px #000;
+    border-right: solid 1px #000;
+    border-bottom: solid 1px #000;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+h4 {
+    border-bottom: solid 1px #000;
+}
+.todo {
+    border-left: solid 5px #db3340;
+}
+
+.indev {
+    border-left: solid 5px #e8b71a;
+}
+
+.intest {
+    border-left: solid 5px #28abe3;
+}
+
+.complete {
+    border-left: solid 5px #1fda9a;
+}

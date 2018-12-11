@@ -85,6 +85,6 @@ class Task {
             return 0;
         }
 
-        return ($task1->getDateUpdated() > $task2 ->getDateUpdated()) ? 1 : -1;
+        return ($task1->getDateUpdated() < $task2 ->getDateUpdated()) ? 1 : -1;
     }
 }
