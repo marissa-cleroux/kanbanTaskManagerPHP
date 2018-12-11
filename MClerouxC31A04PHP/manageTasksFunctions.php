@@ -79,7 +79,7 @@ function saveTasks(){
 function createNewTask($newTask) {
     global $tasks;
 
-        $task = new Task(1, $newTask['title'], $newTask['description']);
+        $task = new Task(1, $newTask['title'], trim($newTask['description']));
         $task->setDateCreated($newTask['dateCreated']);
         $task->setDateUpdated($newTask['dateCreated']);
         $task -> getNewID();
@@ -94,7 +94,7 @@ function validateEditTask($newTask) : bool {
     $fieldNames = array('title' => 'Title', 'description'=> 'Description', 'dateCreated'=> 'Date Created', 'dateUpdated'=>'Date Updated', 'status'=> 'Status');
 
     foreach($newTask as $field => $input){
-        if(empty($input) && $field != 'id'){
+        if(empty(trim($input)) && $field != 'id'){
             $errors[$field] = $fieldNames[$field] .' is empty';
             $editing = TRUE;
             $isValid = FALSE;
@@ -116,32 +116,31 @@ function validateEditTask($newTask) : bool {
             $errors['dateUpdated'] = 'The updated date cannot be after today';
             $editing = TRUE;
             $isValid = FALSE;
-        } else if ($newTask['dateCreated'] < $newTask['dateUpdated']){
+        } else if ($newTask['dateCreated'] > $newTask['dateUpdated']){
             $errors['dateUpdated'] = 'The updated date must be after the created date';
             $editing = TRUE;
             $isValid = FALSE;
         }
-
     }
-
 
     return $isValid;
 }
 
 function validateCreateTask($newTask) : bool{
-    global $errors;
+    global $errors, $editing;
+    $editing = $newTask['editing'];
+
     $isValid = TRUE;
     $fieldNames = array('title' => 'Title', 'description'=> 'Description', 'dateCreated'=> 'Date Created', 'dateUpdated'=>'Date Updated', 'status'=> 'Status');
 
     foreach($newTask as $field => $input){
-        if(empty($input) && $field != 'id' && $field != 'status'){
+        if($field != 'id' && $field != 'status' && $field != 'editing' && empty(trim($input))){
             $errors[$field] = $fieldNames[$field] .' is empty';
             $isValid = FALSE;
         }
     }
 
     $dateCreated = date_parse_from_format('Ymd', $newTask['dateCreated']);
-
 
     if(empty($errors['dateCreated'])) {
         if (!$dateCreated['month'] || !$dateCreated['year'] || !$dateCreated['day']) {
@@ -150,12 +149,11 @@ function validateCreateTask($newTask) : bool{
         } else if (empty($errors['dateCreated']) && !checkdate($dateCreated['month'], $dateCreated['day'], $dateCreated['year'])) {
             $errors['dateCreated'] = $newTask['dateCreated'] . ' is not a valid date';
             $isValid = FALSE;
-        } else if ($newTask['dateCreated'] > $newTask['dateCreated']) {
+        } else if ($newTask['dateCreated'] > date('Ymd')) {
             $errors['dateCreated'] = 'The created date cannot be after today';
             $isValid = FALSE;
         }
     }
 
     return $isValid;
-
 }
