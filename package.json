@@ -4,11 +4,15 @@
   "description": "",
   "main": "taskServer.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node taskServer.js"
   },
   "dependencies": {
     "request": "*"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "8.11.x"
+  }
 }

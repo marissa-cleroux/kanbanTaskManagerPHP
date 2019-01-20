@@ -8,7 +8,10 @@ const qstring = require('querystring');
 const WEBROOT = './public';
 const ERROR_PATH = './errorpages';
 const DEFAULT_PAGE = 'index.html';
-const PORT = 7546;
+let PORT = process.env.PORT;
+if (PORT == null || PORT == "") {
+    PORT = 8000;
+}
 const STATUSES = {
     1:'To Do',
     2:'In Development',
