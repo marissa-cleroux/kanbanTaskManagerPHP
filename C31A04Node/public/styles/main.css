@@ -1,0 +1,118 @@
+body {
+    font-family: 'Montserrat', 'Calibri', sans-serif;
+    text-align: center;
+    margin: 0;
+}
+
+header {
+    position: relative;
+    font-family: 'Lora', 'Times New Roman', serif;
+}
+
+header::before {
+    content: "";
+    display: block;
+    background-color: #f7eac8;
+    margin-right: -10px;
+    height: 600px;
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    transform: skewY(-7deg);
+    z-index: -1;
+}
+
+header>h3 {
+    color: #333333;
+    font-weight: normal;
+    font-style: italic;
+}
+
+form {
+    display: grid;
+    margin-bottom: 20px;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-column-gap: 10px;
+    justify-content: center;
+}
+
+label {
+    justify-self: end;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    align-self:center;
+}
+
+select {
+    background-color: #fff;
+    padding: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.hide {
+    display: none;
+}
+
+
+.task {
+    border-top: solid 1px #000;
+    border-right: solid 1px #000;
+    border-bottom: solid 1px #000;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+.multitask:hover {
+    cursor: pointer;
+}
+
+.task>h3 {
+    border-bottom: solid 1px #333;
+}
+
+.todo {
+    border-left: solid 5px #db3340;
+}
+
+.indev {
+    border-left: solid 5px #e8b71a;
+}
+
+.intest {
+    border-left: solid 5px #28abe3;
+}
+
+.complete {
+    border-left: solid 5px #1fda9a;
+}
+
+#tasks {
+    width: 95%;
+    margin: auto auto 30px auto;
+    display: grid;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat( auto-fill, minmax(250px, 1fr) );
+    justify-content: center;
+}
+
+
+@media screen and (min-width:768px) {
+    form {
+        margin: 40px auto 30px auto;
+        border: dashed 1px #000;
+        padding: 25px 20px 25px 20px;
+        width: 50%;
+    }
+
+    #tasks {
+        width: 85%;
+        grid-row-gap: 20px;
+        grid-column-gap: 20px;
+        grid-template-columns: repeat( auto-fill, minmax(300px, 1fr) );
+    }
+
+}
