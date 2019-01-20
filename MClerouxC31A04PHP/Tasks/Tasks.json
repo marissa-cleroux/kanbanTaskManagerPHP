@@ -1,43 +1,50 @@
 [{
-    "id": 5,
-    "title": "Create mobile version of customer homepage",
-    "description": "Ensure that the customer homepage is created mobile first to enable customers to access their accounts from mobile devices.",
-    "dateCreated": "20181205",
-    "dateUpdated": "20181206",
-    "status": 1
-},{
     "id": 2,
-    "title": "Create start pet visit flow",
-    "description": "Ensure that the flow is created so that an employee can easily start a pet visit when a customer drops of their pet(s).",
-    "dateCreated": "20181201",
-    "dateUpdated": "20181205",
-    "status": 1
-},{
-    "id": 1,
-    "title": "Create mobile version of employee homepage",
-    "description": "Ensure that the employee homepage is created mobile first to enable employees to do their job from mobile devices.",
-    "dateCreated": "20181115",
-    "dateUpdated": "20181205",
-    "status": 3
-},{
-    "id": 6,
-    "title": "Create desktop version of login page for customer",
-    "description": "Ensure that the customer desktop version of homepage allows them to access the primary actions.",
-    "dateCreated": "20181205",
-    "dateUpdated": "20181205",
-    "status": 1
-},{
-    "id": 3,
-    "title": "Create end pet visit flow",
-    "description": "Ensure that the flow is created so that an employee can easily end a pet visit when a customer picks up their pet(s).",
-    "dateCreated": "20181201",
-    "dateUpdated": "20181204",
+    "title": "Create Desktop Version of Login Page for Employee",
+    "description": "Make use of the larger screen size so that the employee can do more things from the home page",
+    "dateCreated": "20181209",
+    "dateUpdated": "20181210",
     "status": 2
 },{
-    "id": 4,
-    "title": "Create entity relationship diagram for HVK database",
-    "description": "Ensure that relationships for HVK database are robust and convey the business rules and requirements",
-    "dateCreated": "20181106",
-    "dateUpdated": "20181201",
+    "id": 3,
+    "title": "Create mobile version of login page for employee",
+    "description": "Create a mobile friendly version of the log in page so that the employee can easily use their devices to do their job.",
+    "dateCreated": "20181101",
+    "dateUpdated": "20181210",
     "status": 4
+},{
+    "id": 1,
+    "title": "Create Make Reservation Flow",
+    "description": "Create the flow so the user can easily make highly customizable reservations",
+    "dateCreated": "20181210",
+    "dateUpdated": "20181210",
+    "status": 2
+},{
+    "id": 5,
+    "title": "Create desktop version of login page for customer",
+    "description": " Ensure that the customer has easy access to primary actions so that the site is easy for all customers to use                ",
+    "dateCreated": "20181210",
+    "dateUpdated": "20181210",
+    "status": 1
+},{
+    "id": 7,
+    "title": "Create end pet visit flow",
+    "description": "Create the end pet visit flow so that an employee can easily end a pets visit when a customer arrives to pick up their pet.                                ",
+    "dateCreated": "20181210",
+    "dateUpdated": "20181210",
+    "status": 1
+},{
+    "id": 6,
+    "title": "Create end pet visit flow",
+    "description": "                Create the end pet visit flow so that an employee can easily end a pets visit when a customer arrives to pick up their pet.                                        ",
+    "dateCreated": "20181130",
+    "dateUpdated": "20181204",
+    "status": 1
+},{
+    "id": 4,
+    "title": "Create desktop version of login page for customer",
+    "description": "Ensure that the customer has easy access to primary actions so that the site is easy for all customers to use",
+    "dateCreated": "20181201",
+    "dateUpdated": "20181201",
+    "status": 1
 }]

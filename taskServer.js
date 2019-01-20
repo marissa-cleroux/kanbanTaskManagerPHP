@@ -22,7 +22,7 @@ const STATUSES = {
 
 const STATUS_CLASS = {
     1:'todo',
-    2:'indev',
+    2: 'indev',
     3:'intest',
     4:'complete'
 };

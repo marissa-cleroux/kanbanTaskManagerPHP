@@ -33,9 +33,10 @@ header>h3 {
 }
 
 
+
 form {
     display: grid;
-    margin: auto auto 20px auto;
+    margin-bottom: 20px;
     grid-template-columns: 1fr 2fr 1fr;
     grid-column-gap: 10px;
     justify-content: center;
@@ -72,7 +73,6 @@ select {
 
 .multitask:hover {
     cursor: pointer;
-    box-shadow: 5px 5px 10px 1px #aaa;
 }
 
 .task>h3 {

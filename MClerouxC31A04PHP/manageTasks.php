@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Manage Tasks</title>
     <link rel="stylesheet" href="./styles/main.css" type="text/css"/>
-    <link href="https://fonts.googleapis.com/css?family=Lora|Montserrat" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css?family=Lora|Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
 
 </head>
@@ -48,9 +48,9 @@ if (isset($_GET["editTask"])) {
 
 if (isset($_POST["saveTask"])) {
 
-        if($_POST["id"] == "" && validateCreateTask($_POST)){
+        if($_POST['id'] == "" && validateCreateTask($_POST)){
             createNewTask($_POST);
-        } else if ($_POST["id"] != "" && validateEditTask($_POST)) {
+        } else if ($_POST['id'] != "" && validateEditTask($_POST)) {
             updateTask($_POST);
         } else {
             $title = $_POST["title"];
@@ -58,8 +58,6 @@ if (isset($_POST["saveTask"])) {
             $dateUpdated = $_POST["dateUpdated"];
             $description = $_POST["description"];
             $status = $_POST["status"];
-            $id = $_POST["id"];
-            $editing = $_POST["editing"];
     }
 
 }
@@ -80,7 +78,8 @@ getTasks();
                rows="5"
                class="<?php echo (!empty($errors["description"]))?"error": "";?>"
                <?php echo ($status == 4)?"disabled": "";?>
-        ><?php echo trim($description)?>
+        >
+        <?php echo $description?>
         </textarea>
         <p class="errorTxt"><?php echo (!empty($errors["description"]))?$errors["description"]: '';?></p>
 
@@ -104,8 +103,7 @@ getTasks();
         <label class="<?php echo ($editing) ? "" : "hide" ?>">Status: </label>
         <select class="<?php echo ($editing) ? "" : "hide";  (!empty($errors["status"]))?"error": "";?>"
                 name="status"
-                id="status"
-                <?php echo ($status == 4)?"disabled": "";?>>
+                id="status">
             <option value="1"
                     class="<?php echo ($status == 1 || $status == 0)? ""  : "hide"?>"
                 <?php echo ($status == 1) ? "selected" : ""; ?>>To Do
@@ -126,8 +124,7 @@ getTasks();
         <p class="errorTxt <?php echo ($editing) ? "" : "hide" ?>"><?php echo (!empty($errors['status']))?$errors['status']: '';?></p>
 
         <input type="hidden" name="id" id="id" value="<?php echo $id ?>"/>
-        <input type="hidden" name="editing" id="editing" value="<?php echo $editing ?>"/>
-        <label></label><input type="submit" value="Save Task" name="saveTask" <?php echo ($status == 4) ? "disabled" : ""; ?>/>
+        <label></label><input type="submit" value="Save Task" name="saveTask"/>
     </form>
 
     <div id="currentTasks">

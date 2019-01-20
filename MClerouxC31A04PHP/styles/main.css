@@ -47,37 +47,26 @@ form {
 }
 
 textarea {
-    width: 300px;
+    font-family: 'Montserrat', 'Calibri', sans-serif;
     font-size: 0.85em;
     resize: none;
 }
 
-input, select, textarea {
-    font-family: 'Montserrat', 'Calibri', sans-serif;
+input, select {
+    font-family: 'Montserrat', sans-serif;
+}
+
+input[type="text"], input[type="textarea"], select {
+    height: 1.5em;
+    width: 300px;
     margin: auto;
 }
 
-input[type="text"]{
-    height: 1.5em;
-    width: 300px;
-}
-
-select {
-    width: 306px;
-    height: 26px;
-}
 input[type="submit"] {
     margin: auto;
     width: 130px;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: #e1e1e1;
-    border: solid 1px #666;
-}
-
-input[type="submit"]:hover {
-    background-color: #fff;
-    box-shadow: 5px 5px 10px 1px #aaa;
 }
 
 .hide {
