@@ -6,8 +6,9 @@ const requestModule =require('request');
 const qstring = require('querystring');
 
 const WEBROOT = './public';
+const PHPROOT = './MClerouxC31A04PHP/manageTasks.php';
 const ERROR_PATH = './errorpages';
-const DEFAULT_PAGE = 'index.html';
+const DEFAULT_PAGE = 'tasks.html';
 let PORT = process.env.PORT;
 if (PORT == null || PORT == "") {
     PORT = 8000;
@@ -39,7 +40,8 @@ const EXTENSIONS = {
     '.xml': 'text/xml',
     '.txt': 'text/plain',
     '.ico': 'image/x-icon',
-    '.json': 'application/json'
+    '.json': 'application/json',
+    '.php': 'text/x-php'
 };
 
 let sendResponse = (response, content, code, contentType) =>{
@@ -102,24 +104,27 @@ http.createServer((request, response) =>{
     let query = qstring.parse(urlObj.query);
 
     if(request.method === 'GET') {
-         if (!ext) {
+        if (!ext) {
             serveDefault(urlObj, response, req);
         } else if (ext === '.ico') {
             let localpath = path.join(__dirname, WEBROOT, pathObj.dir, fileName);
             serveIcon(localpath, response, ext, req);
-        } else if(query.status == 'all' || query.status == 'indev' || query.status == 'intest' || query.status == 'todo' || query.status == 'complete'){
-             requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/MClerouxC31A04PHP/getTaskInfo.php?status=' + query.status, function (error, resp, body) {
-                 if(!error) {
-                     sendResponse(response, body, resp.statusCode, 'application/json');
-                 } else {
-                     sendResponse(response, 'No tasks found' ,resp.statusCode, 'text/plain');
-                 }
-             });
+        } else if (query.status == 'all' || query.status == 'indev' || query.status == 'intest' || query.status == 'todo' || query.status == 'complete') {
+            console.log('Looking for status');
+            requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/MClerouxC31A04PHP/getTaskInfo.php?status=' + query.status, function (error, resp, body) {
+                if (!error) {
+                    sendResponse(response, body, resp.statusCode, 'application/json');
+                } else {
+                    sendResponse(response, 'No tasks found', resp.statusCode, 'text/plain');
+                }
+            });
 
-         } else if(query.id != undefined){
-             requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/MClerouxC31A04PHP/getTaskDetail.php?id=' + query.id, {json:true}, function (error, resp, body) {
-                 if(!error && resp.statusCode == 200) {
-                     let singleTask = `
+
+
+        } else if (query.id != undefined) {
+            requestModule('http://csdev.cegep-heritage.qc.ca/students/MCleroux/c31/assignments/MCleroux_C31A04/MClerouxC31A04PHP/getTaskDetail.php?id=' + query.id, {json: true}, function (error, resp, body) {
+                if (!error && resp.statusCode == 200) {
+                    let singleTask = `
                     <!DOCTYPE html>
                     <head>
                         <meta charset="UTF-8">
@@ -139,12 +144,18 @@ http.createServer((request, response) =>{
                         </div>
                     </body>
                     </html>`;
-                     sendResponse(response, singleTask, resp.statusCode, 'text/html');
-                 } else {
-                     sendResponse(response, 'No tasks found' ,resp.statusCode, 'text/plain');
-                 }
-             });
-         } else if (EXTENSIONS[ext]) {
+                    sendResponse(response, singleTask, resp.statusCode, 'text/html');
+                } else {
+                    sendResponse(response, 'No tasks found', resp.statusCode, 'text/plain');
+                }
+            });
+        } else if (ext === '.php') {
+            console.log('ext', ext);
+            let type = EXTENSIONS[ext];
+            console.log('type', type);
+            let localpath = path.join(__dirname, PHPROOT);
+            readInFile(localpath, type, response, 200, req);
+        } else if (EXTENSIONS[ext]) {
             let type = EXTENSIONS[ext];
             let localpath = path.join(__dirname, WEBROOT, pathObj.dir, fileName);
             readInFile(localpath, type, response, 200, req);

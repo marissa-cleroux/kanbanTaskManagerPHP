@@ -40,8 +40,10 @@ addEventListener('load', ()=>{
         fetch(`?status=${selected}`, {
             Method: 'get'
         }).then((response) => {
+            console.log('first then');
             return response.text();
         }).then((text) =>{
+            console.log(text);
             let tasks = JSON.parse(text);
             displayTasks(tasks);
         }).catch( error =>{
